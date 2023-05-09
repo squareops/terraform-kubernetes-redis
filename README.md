@@ -42,6 +42,13 @@ The required IAM permissions to create resources from this module can be found [
   7. Finally, you can use Grafana to create custom dashboards and visualize the metrics data collected by Prometheus.
   8. This module is compatible with EKS version 1.23, which is great news for users deploying the module on an EKS cluster running that version. Review the module's documentation, meet specific configuration requirements, and test thoroughly after deployment to ensure everything works as expected.
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
+
+  ## Supported Versions Table:
+
+|  Redis Helm Chart Version    |     K8s supported version   |      
+| :-----:                       |         :---                | 
+| **16.13.2**                     |    1.23,1.24,1.25           |
+
 ## Requirements
 
 No requirements.
