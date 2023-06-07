@@ -10,7 +10,7 @@ locals {
 }
 
 module "redis" {
-  source = "squareops/redis/kubernetes.git"
+  source = "squareops/redis/kubernetes"
   redis_config = {
     name                = local.name
     values_yaml         = file("./helm/values.yaml")
