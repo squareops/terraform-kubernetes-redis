@@ -21,7 +21,7 @@ No requirements.
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_redis"></a> [redis](#module\_redis) | https://github.com/sq-ia/terraform-kubernetes-redis.git | n/a |
+| <a name="module_redis"></a> [redis](#module\_redis) | squareops/redis/kubernetes.git | n/a |
 
 ## Resources
 
