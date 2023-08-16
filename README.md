@@ -14,7 +14,7 @@ This module creates a Redis master and one or more Redis slaves, depending on th
 
 |  Redis Helm Chart Version    |     K8s supported version   |  
 | :-----:                       |         :---                |
-| **16.13.2**                     |    **1.23,1.24,1.25**           |
+| **16.13.2**                     |    **1.23,1.24,1.25,1.26,1.27**           |
 
 ## Usage Example
 
@@ -22,17 +22,22 @@ This module creates a Redis master and one or more Redis slaves, depending on th
 module "redis" {
   source                = "squareops/redis/kubernetes"
   redis_config = {
-    name                = "redis"
-    values_yaml         = ""
-    environment         = "prod"
-    architecture        = "replication"
-    slave_volume_size   = "10Gi"
-    master_volume_size  = "10Gi"
-    storage_class_name  = "gp3"
-    slave_replica_count = 2
+    name                             = "redis"
+    values_yaml                      = ""
+    environment                      = "prod"
+    architecture                     = "replication"
+    slave_volume_size                = "10Gi"
+    master_volume_size               = "10Gi"
+    storage_class_name               = "gp3"
+    slave_replica_count              = 2
+    store_password_to_secret_manager = true
   }
   grafana_monitoring_enabled = true
   recovery_window_aws_secret = 0
+  custom_credentials_enabled = true
+  custom_credentials_config = {
+    password = "aajdhgduy3873683dh"
+  }
 }
 
 ```
