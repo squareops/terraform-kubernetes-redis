@@ -8,6 +8,20 @@ locals {
     Department = "Engineering"
   }
   store_password_to_secret_manager = true
+  custom_credentials_enabled = true
+  custom_credentials_config = {
+    password = "aajdhgduy3873683dh"
+  }
+}
+
+module "gcp" {
+  source                           = "squareops/redis/kubernetes//provider/gcp"
+  project_id                       = ""
+  environment                      = local.environment
+  name                             = local.name
+  store_password_to_secret_manager = local.store_password_to_secret_manager
+  custom_credentials_enabled       = local.custom_credentials_enabled
+  custom_credentials_config        = local.custom_credentials_config
 }
 
 module "redis" {
@@ -25,9 +39,7 @@ module "redis" {
     secret_provider_type             = "aws"
   }
   grafana_monitoring_enabled = true
-  recovery_window_aws_secret = 0
-  custom_credentials_enabled = true
-  custom_credentials_config = {
-    password = "aajdhgduy3873683dh"
-  }
+  custom_credentials_enabled = local.custom_credentials_enabled
+  custom_credentials_config = local.custom_credentials_config
+  redis_password = local.custom_credentials_enabled ? "" : module.gcp.redis_password
 }
