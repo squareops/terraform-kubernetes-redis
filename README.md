@@ -6,24 +6,35 @@
 
 ### [SquareOps Technologies](https://squareops.com/) Your DevOps Partner for Accelerating cloud journey.
 <br>
-This module allows users to customize the deployment by providing various input variables. Users can specify the name and environment of the Redis deployment, the chart and app version, the namespace in which the Redis deployment will be created, and whether to enable Grafana monitoring. The module also allows users to set the recovery window for the AWS Secrets Manager that is used to store the Redis password.
+This module allows users to customize the deployment by providing various input variables. Users can specify the name and environment of the Redis deployment, the chart and app version, the namespace in which the Redis deployment will be created, and whether to enable Grafana monitoring. This module provides options to create a new namespace, and to configure recovery windows for AWS Secrets Manager, Azure key vault & GCP secrets manager. With this module, users can easily deploy a highly available redis on AWS EKS, Azure AKS & GCP GKE Kubernetes clusters with the flexibility to customize their configurations according to their needs.
 <br><br>
 This module creates a Redis master and one or more Redis slaves, depending on the specified architecture. The module creates Kubernetes services for the Redis master and slave deployments, and exposes these services as endpoints that can be used to connect to the Redis database. Users can retrieve these endpoints using the module's outputs.
 
 ## Supported Versions :
 
-|  Redis Helm Chart Version    |     K8s supported version   |  
+|  Redis Helm Chart Version    |     K8s supported version (EKS, AKS & GKE)  |  
 | :-----:                       |         :---                |
 | **16.13.2**                     |    **1.23,1.24,1.25,1.26,1.27**           |
 
 ## Usage Example
 
 ```hcl
+module "aws" {
+  source                           = "squareops/redis/kubernetes//provider/aws"
+  environment                      = "prod"
+  name                             = "redis"
+  store_password_to_secret_manager = true
+  custom_credentials_enabled       = true
+  custom_credentials_config        = {
+    password = "aajdhgduy3873683dh"
+  }
+}
+
 module "redis" {
-  source                = "squareops/redis/kubernetes"
+  source = "squareops/redis/kubernetes"
   redis_config = {
     name                             = "redis"
-    values_yaml                      = ""
+    values_yaml                      = file("./helm/values.yaml")
     environment                      = "prod"
     architecture                     = "replication"
     slave_volume_size                = "10Gi"
@@ -31,17 +42,20 @@ module "redis" {
     storage_class_name               = "gp3"
     slave_replica_count              = 2
     store_password_to_secret_manager = true
+    secret_provider_type             = "aws"
   }
   grafana_monitoring_enabled = true
-  recovery_window_aws_secret = 0
   custom_credentials_enabled = true
   custom_credentials_config = {
     password = "aajdhgduy3873683dh"
   }
+  redis_password = true ? "" : module.aws.redis_password
 }
 
 ```
-Refer [examples](https://github.com/squareops/terraform-kubernetes-redis/tree/main/examples/complete) for more details.
+- Refer [AWS examples](https://github.com/squareops/terraform-kubernetes-redis/tree/main/examples/complete/aws) for more details.
+- Refer [Azure examples](https://github.com/squareops/terraform-kubernetes-redis/tree/main/examples/complete/azure) for more details.
+- Refer [GCP examples](https://github.com/squareops/terraform-kubernetes-redis/tree/main/examples/complete/agcp) for more details.
 
 ## IAM Permissions
 The required IAM permissions to create resources from this module can be found [here](https://github.com/squareops/terraform-kubernetes-redis/blob/main/IAM.md)
@@ -54,7 +68,7 @@ The required IAM permissions to create resources from this module can be found [
   5. To deploy Prometheus/Grafana, please follow the installation instructions for each tool in their respective documentation.
   6. Once Prometheus and Grafana are deployed, the exporter can be configured to scrape metrics data from your application or system and send it to Prometheus.
   7. Finally, you can use Grafana to create custom dashboards and visualize the metrics data collected by Prometheus.
-  8. This module is compatible with EKS version 1.23, which is great news for users deploying the module on an EKS cluster running that version. Review the module's documentation, meet specific configuration requirements, and test thoroughly after deployment to ensure everything works as expected.
+  8. This module is compatible with EKS, AKS & GKE which is great news for users deploying the module on an AWS, Azure & GCP cloud. Review the module's documentation, meet specific configuration requirements, and test thoroughly after deployment to ensure everything works as expected.
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 ## Requirements
 
