@@ -22,7 +22,7 @@ No requirements.
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_azure"></a> [azure](#module\_azure) | squareops/redis/kubernetes//provider/azure | n/a |
+| <a name="module_azure"></a> [azure](#module\_azure) | squareops/redis/kubernetes//modules/resources/azure | n/a |
 | <a name="module_redis"></a> [redis](#module\_redis) | squareops/redis/kubernetes | n/a |
 
 ## Resources
