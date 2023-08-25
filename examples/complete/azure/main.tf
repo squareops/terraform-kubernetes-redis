@@ -15,7 +15,7 @@ locals {
 }
 
 module "azure" {
-  source                           = "squareops/redis/kubernetes//provider/azure"
+  source                           = "squareops/redis/kubernetes//modules/resources/azure"
   resource_group_name              = "prod-skaf-rg"
   resource_group_location          = local.region
   environment                      = local.environment

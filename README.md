@@ -20,7 +20,7 @@ This module creates a Redis master and one or more Redis slaves, depending on th
 
 ```hcl
 module "aws" {
-  source                           = "squareops/redis/kubernetes//provider/aws"
+  source                           = "squareops/redis/kubernetes//modules/resources/aws"
   environment                      = "prod"
   name                             = "redis"
   store_password_to_secret_manager = true
@@ -55,7 +55,7 @@ module "redis" {
 ```
 - Refer [AWS examples](https://github.com/squareops/terraform-kubernetes-redis/tree/main/examples/complete/aws) for more details.
 - Refer [Azure examples](https://github.com/squareops/terraform-kubernetes-redis/tree/main/examples/complete/azure) for more details.
-- Refer [GCP examples](https://github.com/squareops/terraform-kubernetes-redis/tree/main/examples/complete/agcp) for more details.
+- Refer [GCP examples](https://github.com/squareops/terraform-kubernetes-redis/tree/main/examples/complete/gcp) for more details.
 
 ## IAM Permissions
 The required IAM permissions to create resources from this module can be found [here](https://github.com/squareops/terraform-kubernetes-redis/blob/main/IAM.md)
