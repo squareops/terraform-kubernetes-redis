@@ -19,38 +19,59 @@ This module creates a Redis master and one or more Redis slaves, depending on th
 ## Usage Example
 
 ```hcl
-module "aws" {
-  source                           = "squareops/redis/kubernetes//modules/resources/aws"
-  environment                      = "prod"
-  name                             = "redis"
+locals {
+  name        = "redis"
+  region      = "eastus"
+  environment = "prod"
+  additional_tags = {
+    Owner      = "organization_name"
+    Expires    = "Never"
+    Department = "Engineering"
+  }
+  create_namespace                 = true
+  namespace                        = "redis"
   store_password_to_secret_manager = true
   custom_credentials_enabled       = true
-  custom_credentials_config        = {
+  custom_credentials_config = {
     password = "aajdhgduy3873683dh"
   }
 }
 
+module "azure" {
+  source                           = "squareops/redis/kubernetes//modules/resources/azure"
+  resource_group_name              = "prod-skaf-rg"
+  resource_group_location          = local.region
+  environment                      = local.environment
+  name                             = local.name
+  store_password_to_secret_manager = local.store_password_to_secret_manager
+  custom_credentials_enabled       = local.custom_credentials_enabled
+  custom_credentials_config        = local.custom_credentials_config
+}
+
 module "redis" {
-  source = "squareops/redis/kubernetes"
+  source           = "squareops/redis/kubernetes"
+  create_namespace = local.create_namespace
+  namespace        = local.namespace
   redis_config = {
-    name                             = "redis"
-    values_yaml                      = file("./helm/values.yaml")
-    environment                      = "prod"
+    name                             = local.name
+    values_yaml                      = ""
+    environment                      = local.environment
+    app_version                      = "6.2.7-debian-11-r11"
     architecture                     = "replication"
     slave_volume_size                = "10Gi"
     master_volume_size               = "10Gi"
-    storage_class_name               = "gp3"
+    storage_class_name               = "infra-service-sc"
     slave_replica_count              = 2
-    store_password_to_secret_manager = true
-    secret_provider_type             = "aws"
+    store_password_to_secret_manager = local.store_password_to_secret_manager
+    secret_provider_type             = "azure"
   }
   grafana_monitoring_enabled = true
-  custom_credentials_enabled = true
-  custom_credentials_config = {
-    password = "aajdhgduy3873683dh"
-  }
-  redis_password = true ? "" : module.aws.redis_password
+  custom_credentials_enabled = local.custom_credentials_enabled
+  custom_credentials_config  = local.custom_credentials_config
+  redis_password             = local.custom_credentials_enabled ? "" : module.azure.redis_password
 }
+
+
 
 ```
 - Refer [AWS examples](https://github.com/squareops/terraform-kubernetes-redis/tree/main/examples/complete/aws) for more details.
