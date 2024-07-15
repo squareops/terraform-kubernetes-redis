@@ -10,7 +10,7 @@ locals {
   create_namespace                 = true
   namespace                        = "redis"
   store_password_to_secret_manager = true
-  custom_credentials_enabled = true
+  custom_credentials_enabled       = true
   custom_credentials_config = {
     password = "aajdhgduy3873683dh"
   }
@@ -45,6 +45,6 @@ module "redis" {
   }
   grafana_monitoring_enabled = true
   custom_credentials_enabled = local.custom_credentials_enabled
-  custom_credentials_config = local.custom_credentials_config
-  redis_password = local.custom_credentials_enabled ? "" : module.gcp.redis_password
+  custom_credentials_config  = local.custom_credentials_config
+  redis_password             = local.custom_credentials_enabled ? "" : module.gcp.redis_password
 }

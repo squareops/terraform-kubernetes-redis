@@ -33,7 +33,7 @@ module "redis" {
     name                             = local.name
     values_yaml                      = file("./helm/values.yaml")
     environment                      = local.environment
-    app_version                      = "6.2.7-debian-11-r11"
+    app_version                      = "7.2.5-debian-12-r2"
     architecture                     = "replication"
     slave_volume_size                = "10Gi"
     master_volume_size               = "10Gi"

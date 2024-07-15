@@ -5,7 +5,7 @@ variable "redis_config" {
     environment                      = ""
     master_volume_size               = ""
     architecture                     = "replication"
-    app_version                      = "6.2.7-debian-11-r11"
+    app_version                      = "7.2.5-debian-12-r2"
     slave_replica_count              = 1
     slave_volume_size                = ""
     storage_class_name               = ""
@@ -17,7 +17,7 @@ variable "redis_config" {
 
 variable "chart_version" {
   type        = string
-  default     = "16.13.2"
+  default     = "19.6.1"
   description = "Version of the chart for the Redis application that will be deployed."
 }
 
